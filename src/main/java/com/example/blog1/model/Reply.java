@@ -1,2 +1,4 @@
-package com.example.blog1.model;public class Reply {
+package com.example.blog1.model;
+
+public class Reply {
 }
