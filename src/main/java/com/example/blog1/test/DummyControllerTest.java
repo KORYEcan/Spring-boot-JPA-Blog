@@ -1,6 +1,7 @@
 package com.example.blog1.test;
 
 
+import com.example.blog1.model.RoleType;
 import com.example.blog1.model.User;
 import com.example.blog1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class DummyControllerTest {
         System.out.println("password = " + password);
         System.out.println("email = " + email);
 
-        return "회원가입이 완료되었습니다.";
+        return "회원가입이 완료되었습니다1.";
     }
     @PostMapping("/dummy/join2")
     public String join2(@RequestParam("username") String u, @RequestParam("password")  String p,@RequestParam("email")  String e) {
@@ -31,7 +32,7 @@ public class DummyControllerTest {
         System.out.println("password = " + p);
         System.out.println("email = " + e);
 
-        return "회원가입이 완료되었습니다.";
+        return "회원가입이 완료되었습니다2.";
     }
     @PostMapping("/dummy/join3")
     public String join3(User user) {    //아주 유용한 기능으로 스프링 Object도 파싱해서 데이터값을 넣어준다.
@@ -42,8 +43,10 @@ public class DummyControllerTest {
         System.out.println("user.getPassword() = " + user.getPassword()); //
         System.out.println("user.getEmail() = " + user.getEmail());       //
 
+        user.setRole(RoleType.USER);
+
         userRepository.save(user);
-        return "회원가입이 완료되었습니다.";
+        return "회원가입이 완료되었습니다3.";
     }
 
 }
