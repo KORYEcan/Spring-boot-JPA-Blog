@@ -5,15 +5,30 @@ import com.example.blog1.model.RoleType;
 import com.example.blog1.model.User;
 import com.example.blog1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.util.function.Supplier;
+
+@RestController //HTML이 아닌 데이터를 리턴해주는 컨트롤러
 public class DummyControllerTest {
 
     @Autowired  //의존성 주입(DI)
     private UserRepository userRepository;
+
+    //http://localhost:8000/blog/dummy/user/3
+    @GetMapping("/dummy/user/{id}")   //{id} 주소로 파라미터를 전달 받을 수 있음
+    public User detail(@PathVariable int id) {
+        // user/4을 찾다가 DB에서 못찾으면 user가 null이 되고 return 또한 null발생해 프로그램 문제을 발생
+        //Optional로 User객체를 감싸서 가져오고 null인지 판단해서 return을 시켜줌
+        User user = userRepository.findById(id).orElseThrow(new Supplier<IllegalArgumentException>() {
+            @Override
+            public IllegalArgumentException get() {
+                return new IllegalArgumentException("해당 사용자가 없습니다. id:"+id);
+            }
+        });
+       //@RestController
+        return user;
+     }
 
     //localhost:8000/blog/dummy/join(요청)
     //http의 body에 username,password, email데이터를 가지고 (요청)
