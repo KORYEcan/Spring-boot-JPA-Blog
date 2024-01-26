@@ -5,7 +5,6 @@ import com.example.blog1.model.RoleType;
 import com.example.blog1.model.User;
 import com.example.blog1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,11 +34,11 @@ public class DummyControllerTest {
 
     }
 
-
+    //save()는 id를 전달하면 해당 id에 대한 데이터가 없으면 insert를 해요.
     //email, password
     @Transactional //메서드 종료시에 자동 commit이 됨.
     @PutMapping("/dummy/user/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody User requestUser) {
+    public User updateUser(@PathVariable int id, @RequestBody User requestUser) { //json 데이터를 요청- > java object(MessageConverter의 Jackson라이브러리가 변환해줘서 받아줌.
         System.out.println("id = " + id);
         System.out.println("password:" + requestUser.getPassword());
         System.out.println("email:" + requestUser.getEmail());
