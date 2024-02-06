@@ -4,7 +4,6 @@ import com.example.blog1.dto.ResponseDto;
 import com.example.blog1.model.RoleType;
 import com.example.blog1.model.User;
 import com.example.blog1.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,8 @@ public class UserApiController {
 
         return new ResponseDto<Integer>(HttpStatus.OK.value(),1); // 자바 오프젝트를 JSON으로 변환해서 리턴(Jackson)
     }
-    @PostMapping("/api/user/login")   //스프링 시큐리티 이용해서 로그인
+
+   /* @PostMapping("/api/user/login")   //스프링 시큐리티 이용해서 로그인
     public ResponseDto<Integer> login(@RequestBody User user , HttpSession session) {
         System.out.println("UserApiController:login 호출됨");
         User principal=userService.login(user);   //principal(접근주체)
@@ -36,5 +36,10 @@ public class UserApiController {
         }
 
         return new ResponseDto<Integer>(HttpStatus.OK.value(),1); // 자바 오프젝트를 JSON으로 변환해서 리턴(Jackson)
-    }
+    }*/
+
+
+
+
+
 }
