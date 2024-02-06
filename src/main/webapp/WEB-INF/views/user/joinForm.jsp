@@ -38,10 +38,12 @@
         </div>
 
 
-        <button id="btn-save"  class="btn btn-primary">회원가입 완료</button>
     </form>
+    <button id="btn-save"  class="btn btn-primary">회원가입 완료</button>
+
 </div>
-<script src="/blog/js/user/user.js"> </script>
+
+<script src="/js/user/user.js"> </script>
 <%@include file="../layout/footer.jsp"%>
 
 
