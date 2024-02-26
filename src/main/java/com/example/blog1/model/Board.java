@@ -28,10 +28,9 @@ public class Board {
     @Column(nullable = false, length = 100)
     private String title;  //제목
 
-    @Lob //대용량 데이터 사용시
+    @Column(columnDefinition = "LONGTEXT") //대용량 데이터 사용시
     private String content; //내용 -> 썸머노트 라이브러리를 사용할 예정 <html> 태그가 섞여서 디자인이 됨.
 
-    @ColumnDefault("0")
     private int count; //게시글 조회수
 
     @ManyToOne   //Many= Board, one= User -> 여러개의 글은 유저한명한테서 나올수있다.

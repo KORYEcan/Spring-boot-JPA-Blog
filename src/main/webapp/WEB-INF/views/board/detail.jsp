@@ -21,27 +21,30 @@
 
 <div class="container">
 
-    <form >
+    <button class="btn btn-secondary" onclick="history.back()">돌아가기</button>
 
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Enter title" id="title">
+    <c:if test="${board.user.id==principal.user.id}">
+        <a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
+        <button id="btn-delete" class="btn btn-danger">삭제</button>
+    </c:if>
+
+    <br/><br/>
+    <div>
+        글 번호: <span id="id"><i>${board.id} </i></span>
+        작성자: <span><i>${board.user.username} </i></span>
+    </div>
+    <br/>
+        <div >
+            <h3>${board.title}</h3>
         </div>
-
-        <div class="form-group">
-            <textarea class="form-control summernote" rows="5" id="content"></textarea>
+            <hr/>
+        <div >
+            <div>${board.content}</div>
         </div>
-    </form>
+             <hr/>
 
-    <button id="btn-save" class="btn btn-primary">글쓰기 완료</button>
 
 </div>
-
-<script>
-    $('.summernote').summernote({
-        tabsize: 2,
-        height: 300
-    });
-</script>
 
 <script src="/js/board.js"> </script>
 <%@include file="../layout/footer.jsp"%>

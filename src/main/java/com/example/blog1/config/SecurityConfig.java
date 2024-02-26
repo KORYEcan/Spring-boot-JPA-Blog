@@ -6,8 +6,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 
 @Configuration      //빈 등록: 스프링 컨테이너에서 객체를 관리할 수 있게 하는 것
@@ -24,11 +26,15 @@ public class SecurityConfig    {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-        }
+  @Bean
+  public WebSecurityCustomizer ignore() {
+      return w -> w.ignoring().requestMatchers("/static/**");
+  }
 
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+      return authenticationConfiguration.getAuthenticationManager();
+  }
 
 
     //시큐리티가 대신 로그인해주는데 password를 가로채기를 하는데
@@ -42,23 +48,21 @@ public class SecurityConfig    {
     SecurityFilterChain fliterChain(HttpSecurity http) throws Exception {
 
         //csrf 토큰 비활성화 (테스트 시 걸어두는게 좋음)
-        http.csrf().disable();
+        http.csrf(c -> c.disable());
 
-        http.formLogin()
-                .loginPage("/auth/loginForm")
-                .permitAll()
-                .loginProcessingUrl("/auth/loginProc")//스프링 시큐리티가 해당 주소로 요청오는 로그인을 가로채고 대신 로그인 해준다.
-                .defaultSuccessUrl("/")//정상적으로 요청이 완료-> "/" 홈으로
-                .and()
-                .authorizeHttpRequests()
-//                "/auth/**","/js/**","/css/**","/image/**",
-                .requestMatchers("/", "/auth/**", "/js/**", "/css/**", "/image/**").permitAll()
-                .anyRequest().authenticated();
+        http.authorizeHttpRequests(a -> {
+            a.requestMatchers(RegexRequestMatcher.regexMatcher("/board/\\d+"+"/dummy/\\d+")).permitAll()
+                    .requestMatchers("/users/**", "/board/**").authenticated()
+                    .anyRequest().permitAll();
+        });
 
+        http.formLogin(
+                f -> {
+                    f.loginPage("/auth/loginForm").loginProcessingUrl("/auth/loginProc").defaultSuccessUrl("/").failureUrl("/auth/loginForm");
+
+                });
 
         //인증 주소 설정
-
-
         return http.build();
     }
 
