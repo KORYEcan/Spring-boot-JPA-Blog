@@ -34,6 +34,7 @@ public class UserService {
         user.setRole(RoleType.USER);
         userRepository.save(user);
     }
+
     @Transactional
     public void updateForm(User user) {
         //수정시에는 영속성 컨텍스트 User 오브젝트를 영속화시키고, 영속화된 User 오브젝트를 수정
@@ -50,7 +51,16 @@ public class UserService {
 
         //회원수정 메서드 종료시= 서비스 종료시 = 트랜잭션이 종료 = commit이 자동으로 됨
         //영속화된 persistence 객체의 변화가 감지되면 더티체킹이 되어서 DB에 update를 자동으로 날려줌
-
-
     }
+
+    @Transactional(readOnly = true)
+    public User findUser(String username) {
+        System.out.println("회원 찾기 111111111111111");
+        User user =  userRepository.findByUsername(username).orElseGet(()->{
+            return new User();
+        });
+        System.out.println("회원 찾기 2222222222222222");
+        return user;
+    }
+
 }

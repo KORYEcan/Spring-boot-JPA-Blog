@@ -21,6 +21,8 @@ public class SecurityConfig    {
 //    @Autowired
 //    private PrincipalDetailService principalDetailService;
 
+
+
     @Bean  //Ioc가 됨
     BCryptPasswordEncoder encode() {
         return new BCryptPasswordEncoder();
